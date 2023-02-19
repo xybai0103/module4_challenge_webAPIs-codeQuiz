@@ -13,14 +13,54 @@ var input = document.createElement('input');
 input.type = 'radio';
 input.name = 'choice';
 input.setAttribute('hidden', '');
-// object 1st question
+// set an array of five question objects
+var questions = [question1, question2, question3, question4, question5];
+// set object question1
 var question1 = {
-  title: '',
-  choice1: '',
-  choice2: '',
-  choice3: '',
-  choice4: ''
+  title: 'Which of the following is an inline HTML element?',
+  choice1: '1. div',
+  choice2: '2. p',
+  choice3: '3. h1',
+  choice4: '4. img'
 }
+question1.choice4.dataset.state = 'right';
+// set object question2
+var question2 = {
+  title: 'Which CSS property is used to set the direction of flex items in a flex container?',
+  choice1: '1. justify-content',
+  choice2: '2. flex-direction',
+  choice3: '3. align-items',
+  choice4: '4. flex-wrap'
+}
+question2.choice2.dataset.state = 'right';
+// set object question3
+var question3 = {
+  title: 'Which of the following is not a way to create a new object in JavaScript?',
+  choice1: '1. Object constructor',
+  choice2: '2. Object literal notation',
+  choice3: '3. Object.create method',
+  choice4: '4. Object.assign method'
+}
+question3.choice2.dataset.state = 'right';
+// set object question4
+var question4 = {
+  title: 'Which of the following is not a way to create a new object in JavaScript?',
+  choice1: '1. removeListener',
+  choice2: '2. off',
+  choice3: '3. removeEventListener',
+  choice4: '4. stopListening'
+}
+question4.choice3.dataset.state = 'right';
+// set object question5
+var question5 = {
+  title: 'Which method is used to retrieve data from local storage in JavaScript?',
+  choice1: '1. localStorage.getItem()',
+  choice2: '2. localStorage.setValue()',
+  choice3: '3. localStorage.setItem()',
+  choice4: '4. localStorage.getData()'
+}
+question5.choice1.dataset.state = 'right';
+
 
 
 // application first-loading page has a "Coding Quiz Challenge" title, a start button, and a timer set to 0
