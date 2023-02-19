@@ -1,3 +1,7 @@
+// application first-loading page has a "Coding Quiz Challenge" title, a start button, and a timer set to 0
+// when click start button: 
+  // timer starts from 75 seconds
+  // present 1st single-choice question with 4 answer buttons
 // when user clicks one of the 4 answer buttons of 1st question:
   // present 2nd single-choice question with 4 answer buttons
   // if for 1st question user clicked the correct answer button, display "correct!" for a second
