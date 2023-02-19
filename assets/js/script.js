@@ -1,7 +1,66 @@
+var title = document.querySelector('.title');
+var message = document.querySelector('.message');
+var singleButton = document.querySelector('.single-button');
+var timer = document.querySelector('#timer');
+// timer starts from 75 seconds
+var secondsLeft = 75;
+// add a container to hold four choices of the single-choice question
+var choices = document.createElement('div');
+choices.classList.add('choices');
+// add 4 label elements wrapping 4 input elements repesenting four choices
+var label = document.createElement('label');
+var input = document.createElement('input');
+input.type = 'radio';
+input.name = 'choice';
+input.setAttribute('hidden', '');
+// object 1st question
+var question1 = {
+  title: '',
+  choice1: '',
+  choice2: '',
+  choice3: '',
+  choice4: ''
+}
+
+
 // application first-loading page has a "Coding Quiz Challenge" title, a start button, and a timer set to 0
-// when click start button: 
-  // timer starts from 75 seconds
-  // present 1st single-choice question with 4 answer buttons
+// The init() function fires when the page is loaded 
+function init() {
+    title.textContent = 'Coding Quiz Challenge';
+    message.textContent = 'Try to answer the following code-related questions with the time limit. Keep in mind that incorrect answers will penalize your scoretime by ten seconds!';
+    singleButton.textContent = 'Start Quiz';
+    timer.textContent = 'Time: 0'
+  }
+  init();
+// countDown function
+function countDown() {
+    var timerInterval = setInterval(function() {
+        secondsLeft--;
+        timer.textContent = "Time: " + secondsLeft;
+    
+        if(secondsLeft === 0) {
+          // Stops execution of action at set interval
+          clearInterval(timerInterval);
+        } 
+      }, 1000);
+} 
+// renderQuestion function
+function renderQuestion() {
+  for(i=0; i<4; i++){
+    label.append(input);
+    choices.append(label);
+  }
+
+}
+// when click start button:
+singleButton.addEventListener('click', function(){
+    // timer (countDown function) starts from 75 seconds
+    countDown();
+    // present 1st single-choice question with 4 answer buttons (selection div?)
+    renderQuestion();
+}
+)
+
 // when user clicks one of the 4 answer buttons of 1st question:
   // present 2nd single-choice question with 4 answer buttons
   // if for 1st question user clicked the correct answer button, display "correct!" for a second
