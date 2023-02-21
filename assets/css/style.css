@@ -41,3 +41,8 @@ label {
     color: white;
     text-align: left;
 }
+
+.messageContainer {
+    text-align: left;
+    margin-left: 20px;
+}

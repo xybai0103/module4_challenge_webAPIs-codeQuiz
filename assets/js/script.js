@@ -63,7 +63,7 @@ answerChoices.classList.add('answerChoices');
 
 
 // renderQuestion function
-function renderQuestion() {
+function addAnswerButtons() {
   main.append(answerChoices);
   for(i=0; i<4; i++){
     // creat label elements wrapping 4 input elements repesenting four choices  **can not creat one tag and append multiple times
@@ -74,12 +74,19 @@ function renderQuestion() {
       input.setAttribute('hidden', '');
     label.append(input);
     answerChoices.append(label);
-    answerChoices.children[i].textContent = questions[0].choices[i];
+  };
+}
+
+function renderQuestion() {
+  for(j=0; j<4; j++){
+    answerChoices.children[j].textContent = questions[0].choices[j];
   };
   title.textContent = questions[0].title;
 }
+  
 
-console.log(answerChoices);
+
+
 // when click start button:
 singleButton.addEventListener('click', function(){
     // timer (countDown function) starts from 75 seconds
@@ -87,21 +94,47 @@ singleButton.addEventListener('click', function(){
     // clear message and single button
     message.style.display = 'none';
     singleButton.style.display = 'none';
-    // present 1st single-choice question with 4 answer buttons (selection div?)
+    // present 1st single-choice question with 4 answer buttons
+    addAnswerButtons();
     renderQuestion();
 });
 
 // when user clicks one of the 4 answer buttons of 1st question:
+answerChoices.addEventListener('click', function(event){
+    var userChoice = event.target;
+    // create a container for an alert message and a horizontal line
+    var messageContainer = document.createElement('div');
+    var alertMessage = document.createElement('span');
+    messageContainer.classList.add('messageContainer');
+    var hr = document.createElement('hr');
+    messageContainer.append(hr, alertMessage);
+    main.append(messageContainer);
+    // if for 1st question user clicked the correct answer button, display "Correct!" for a second
+    if (correctAnswers.includes(userChoice.textContent)){
+       alertMessage.textContent = 'Correct!';
+    }
+    // else:
+    else {
+       // display "Wrong!" for a second
+       alertMessage.textContent = 'Wrong!';
+       // 10 seconds substracted from timer
+       secondsLeft -= 10;
+    }
+    // Hide the message after one second
+    setTimeout(() => {
+    messageContainer.style.display = "none";
+    }, 1000);
+});
+
+
   // present 2nd single-choice question with 4 answer buttons
-  // if for 1st question user clicked the correct answer button, display "correct!" for a second
-  // else:
-      // display "wrong!" for a second
-      // 10 seconds substracted from timer
+
+
 // when user clicks one of the 4 answer buttons of 2nd question:
   // present 3rd single-choice question with 4 answer buttons
-  // if for 2nd question user clicked the correct answer button, display "correct!" for a second
+  // if for 2nd question user clicked the correct answer button, display "Correct!" for a second
   // else:
-      // display "wrong!" for a second
+      // display "Wrong!" for a second
       // 10 seconds substracted from timer
 // .. same process as above..
 // when user clicks one of the 4 answer buttons of 5th question:
