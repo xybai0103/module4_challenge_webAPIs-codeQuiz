@@ -6,6 +6,11 @@ var timer = document.querySelector('#timer');
 var currentQuestion = 0;
 // number of questions that user selects the correct answer
 var numberOfCorrect = 0;
+// create a container for an alert message and a horizontal line
+var messageContainer = document.createElement('div');
+var alertMessage = document.createElement('span');
+messageContainer.classList.add('messageContainer');
+var hr = document.createElement('hr');
 
 
 // application first-loading page has a "Coding Quiz Challenge" title, a start button, and a timer set to 0
@@ -59,6 +64,8 @@ function countDown() {
     if(secondsLeft === 0) {
       // Stops execution of action at set interval
       clearInterval(timerInterval);
+      // render the page for user to enter initials
+      enterInitials();
     } 
   }, 1000);
 } 
@@ -110,11 +117,7 @@ startButton.addEventListener('click', function(){
 // when user clicks one of the 4 answer buttons of a question:
 answerChoices.addEventListener('click', function(event){
     var userChoice = event.target;
-    // create a container for an alert message and a horizontal line
-    var messageContainer = document.createElement('div');
-    var alertMessage = document.createElement('span');
-    messageContainer.classList.add('messageContainer');
-    var hr = document.createElement('hr');
+    // add the alert message and the horizontal line
     messageContainer.append(hr, alertMessage);
     main.append(messageContainer);
     // if for user clicked the correct answer button, display "Correct!" for a second
@@ -145,36 +148,39 @@ answerChoices.addEventListener('click', function(event){
         clearInterval(timerInterval);
         // set timer to 0
         timer.textContent = "Time: 0";
-        var enterInitials = function(){
-          // display "All done!"
-          title.textContent = 'All done!';
-          // clear answer buttons
-          answerChoices.style.display = 'none';
-          // calculate user's score: number of correct answers plus number of seconds left when timer stops
-          var score = numberOfCorrect + secondsLeft;
-          // display final score
-          message.style.display = '';
-          message.textContent = 'Your final score: ' + score;
-          // display an input area for user to input initials
-          var initialLabel = document.createElement('label');
-          initialLabel.textContent = 'Enter Initials: ';
-          var initialInput = document.createElement('input');
-          initialInput.type = 'text';
-          // display a submit button
-          var submitButton = document.createElement('input');
-          submitButton.type = 'submit';
-          submitButton.classList.add('submit-button');
-          // put the input area and submit button before alert message
-          main.insertBefore(initialLabel, messageContainer);
-          main.insertBefore(initialInput, messageContainer);
-          main.insertBefore(submitButton, messageContainer);
-        }
+        // render the page for user to enter initials
         enterInitials();
       }
     }
-
     renderNextQuestion();
 });
+
+// funtion to render the page for user to enter initials
+var enterInitials = function(){
+  // display "All done!"
+  title.textContent = 'All done!';
+  // clear answer buttons
+  answerChoices.style.display = 'none';
+  // calculate user's score: number of correct answers plus number of seconds left when timer stops
+  var score = numberOfCorrect + secondsLeft;
+  // display final score
+  message.style.display = '';
+  message.textContent = 'Your final score: ' + score;
+  // display an input area for user to input initials
+  var initialLabel = document.createElement('label');
+  initialLabel.textContent = 'Enter Initials: ';
+  var initialInput = document.createElement('input');
+  initialInput.type = 'text';
+  // display a submit button
+  var submitButton = document.createElement('input');
+  submitButton.type = 'submit';
+  submitButton.classList.add('submit-button');
+  // put the input area and submit button before alert message
+  main.insertBefore(initialLabel, messageContainer);
+  main.insertBefore(initialInput, messageContainer);
+  main.insertBefore(submitButton, messageContainer);
+}
+
 
   
 // when timer reaches 0:
