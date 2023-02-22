@@ -8,20 +8,22 @@ var currentQuestion = 0;
 var numberOfCorrect = 0;
 // create a container for an alert message and a horizontal line
 var messageContainer = document.createElement('div');
-var alertMessage = document.createElement('span');
 messageContainer.classList.add('messageContainer');
-var hr = document.createElement('hr');
-
-
-// application first-loading page has a "Coding Quiz Challenge" title, a start button, and a timer set to 0
-// The init() function fires when the page is loaded 
-function init() {
-  title.textContent = 'Coding Quiz Challenge';
-  message.textContent = 'Try to answer the following code-related questions with the time limit. Keep in mind that incorrect answers will penalize your scoretime by ten seconds!';
-  startButton.textContent = 'Start Quiz';
-  timer.textContent = 'Time: 0'
-}
-init();
+main.append(messageContainer);
+// create an input area for user to input initials
+var initialLabel = document.createElement('label');
+initialLabel.textContent = 'Enter Initials: ';
+var initialInput = document.createElement('input');
+initialInput.type = 'text';
+// create a submit button
+var submitButton = document.createElement('input');
+submitButton.type = 'submit';
+submitButton.classList.add('submit-button');
+// ordered list of highcores
+var highscoresList = document.querySelector('.highscores-list');
+// create a button to go back and a button to clear scores
+var goBackButton = document.createElement('button');
+var clearScoresButton = document.createElement('button');
 
 
 // title and answer properties of object question1
@@ -79,7 +81,7 @@ answerChoices.classList.add('answerChoices');
 // addAnswerButtons function
 function addAnswerButtons() {
   main.append(answerChoices);
-  for(i=0; i<4; i++){
+  for(var i=0; i<4; i++){
     // creat label elements wrapping 4 input elements repesenting four choices  **can not creat one tag and append multiple times
     var answerLabel = document.createElement('label');
     answerLabel.classList.add('answer-label');
@@ -94,7 +96,7 @@ function addAnswerButtons() {
 
 // function to render a question
 function renderQuestion() {
-  for(j=0; j<4; j++){
+  for(var j=0; j<4; j++){
     answerChoices.children[j].textContent = questions[currentQuestion].choices[j];
   };
   title.textContent = questions[currentQuestion].title;
@@ -118,6 +120,10 @@ startButton.addEventListener('click', function(){
 answerChoices.addEventListener('click', function(event){
     var userChoice = event.target;
     // add the alert message and the horizontal line
+    var messageContainer = document.createElement('div');
+    messageContainer.classList.add('messageContainer');
+    var alertMessage = document.createElement('span');
+    var hr = document.createElement('hr');
     messageContainer.append(hr, alertMessage);
     main.append(messageContainer);
     // if for user clicked the correct answer button, display "Correct!" for a second
@@ -155,26 +161,18 @@ answerChoices.addEventListener('click', function(event){
     renderNextQuestion();
 });
 
+// calculate user's score: number of correct answers plus number of seconds left when timer stops
+var score = numberOfCorrect + secondsLeft;
+
 // funtion to render the page for user to enter initials
 var enterInitials = function(){
   // display "All done!"
   title.textContent = 'All done!';
   // clear answer buttons
   answerChoices.style.display = 'none';
-  // calculate user's score: number of correct answers plus number of seconds left when timer stops
-  var score = numberOfCorrect + secondsLeft;
   // display final score
   message.style.display = '';
   message.textContent = 'Your final score: ' + score;
-  // display an input area for user to input initials
-  var initialLabel = document.createElement('label');
-  initialLabel.textContent = 'Enter Initials: ';
-  var initialInput = document.createElement('input');
-  initialInput.type = 'text';
-  // display a submit button
-  var submitButton = document.createElement('input');
-  submitButton.type = 'submit';
-  submitButton.classList.add('submit-button');
   // put the input area and submit button before alert message
   main.insertBefore(initialLabel, messageContainer);
   main.insertBefore(initialInput, messageContainer);
@@ -182,14 +180,34 @@ var enterInitials = function(){
 }
 
 
-  
-// when timer reaches 0:
-  // timer stops
-  // display "All done!" + final score
-  // display an input area for user to input initials
-  // display a submit button
-  
-// when user clicks submit button:
+var highscores = [];
+function renderHighscores() {
+  highscoresList.innerHTML = "";
+  for (var i = 0; i < highscores.length; i++) {
+    var li = document.createElement("li");
+    li.textContent = highscores[i];
+    highscoresList.append(li);
+  }
+}
+
+function storeHighscores() {
+  localStorage.setItem("highscores", JSON.stringify(highscores));
+}
+
+submitButton.addEventListener("click", function(event) {
+  event.preventDefault();
+  var highscore = initialInput.value + ' - ' + score;
+ // add a li when submit initials
+  highscores.push(highscore);
+  storeHighscores();
+  renderHighscores();
+  title.textContent = 'Highscores';
+  message.style.display = 'none';
+  initialLabel.style.display = 'none';
+  initialInput.style.display = 'none';
+  submitButton.style.display = 'none';
+});
+
   // display "Highscores"
   // display user's "initials - final score" as a list item
   // display previous "initials - final score"s as list items
@@ -199,8 +217,12 @@ var enterInitials = function(){
     // when user clicks the button, all "initial -final score"s list items cleared
   // clear timer
 
-
-
-//TASKS
-  // store "initial -final score" in localStorage: convert object to JSON string
-    // pull it out to use: turn JSON string back to object
+// Go back to the first loading page
+/*function init() {
+  title.textContent = 'Coding Quiz Challenge';
+  message.style.display = '';
+  message.textContent = 'Try to answer the following code-related questions with the time limit. Keep in mind that incorrect answers will penalize your scoretime by ten seconds!';
+  startButton.style.display = '';
+}
+init();
+*/
