@@ -206,7 +206,7 @@ submitButton.addEventListener('click', function() {
     userScore: score
   }
   //**If not initialize this, will only render the latest score
-  highscores = JSON.parse(localStorage.getItem("highscores"));
+  highscores = JSON.parse(localStorage.getItem("highscores"))||[];
   highscores.push(userScore)
   storeHighscores();
   renderHighscores();
