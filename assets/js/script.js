@@ -142,7 +142,7 @@ answerChoices.addEventListener('click', function(event){
        // 10 seconds substracted from timer
        secondsLeft -= 10;
     }
-    // Hide the message after one second
+    //**Hide the message after one second
     setTimeout(() => {
     messageContainer.style.display = 'none';
     }, 1000);
@@ -223,7 +223,10 @@ submitButton.addEventListener('click', function() {
   main.append(clearScoresButton); 
 });
 
-
+//**when user clicks the "Go Back" button, restart from the first-loading page
+goBackButton.addEventListener('click', () => {
+  location.reload();
+});
 
 // when user clicks the "Clear Scores" button, all "initial -final score"s list items cleared
 clearScoresButton.addEventListener('click', function() {
