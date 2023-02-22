@@ -1,9 +1,11 @@
 var main = document.querySelector('main');
+var header = document.querySelector('header');
 var title = document.querySelector('.title');
 var message = document.querySelector('.message');
 var startButton = document.querySelector('.start-button');
 var timer = document.querySelector('#timer');
 var currentQuestion = 0;
+var score = 0;
 // number of questions that user selects the correct answer
 var numberOfCorrect = 0;
 // create a container for an alert message and a horizontal line
@@ -23,7 +25,9 @@ submitButton.classList.add('submit-button');
 var highscoresList = document.querySelector('.highscores-list');
 // create a button to go back and a button to clear scores
 var goBackButton = document.createElement('button');
+goBackButton.textContent = 'Go Back';
 var clearScoresButton = document.createElement('button');
+clearScoresButton.textContent = 'Clear Scores';
 
 
 // title and answer properties of object question1
@@ -61,7 +65,7 @@ var timerInterval;
 function countDown() {
   timerInterval = setInterval(function() {
     secondsLeft--;
-    timer.textContent = "Time: " + secondsLeft;
+    timer.textContent = 'Time: ' + secondsLeft;
 
     if(secondsLeft === 0) {
       // Stops execution of action at set interval
@@ -140,7 +144,7 @@ answerChoices.addEventListener('click', function(event){
     }
     // Hide the message after one second
     setTimeout(() => {
-    messageContainer.style.display = "none";
+    messageContainer.style.display = 'none';
     }, 1000);
     
     // present next question
@@ -153,7 +157,7 @@ answerChoices.addEventListener('click', function(event){
         // stop timer
         clearInterval(timerInterval);
         // set timer to 0
-        timer.textContent = "Time: 0";
+        timer.textContent = 'Time: 0';
         // render the page for user to enter initials
         enterInitials();
       }
@@ -161,8 +165,6 @@ answerChoices.addEventListener('click', function(event){
     renderNextQuestion();
 });
 
-// calculate user's score: number of correct answers plus number of seconds left when timer stops
-var score = numberOfCorrect + secondsLeft;
 
 // funtion to render the page for user to enter initials
 var enterInitials = function(){
@@ -170,6 +172,8 @@ var enterInitials = function(){
   title.textContent = 'All done!';
   // clear answer buttons
   answerChoices.style.display = 'none';
+  // calculate user's score: number of correct answers plus number of seconds left when timer stops
+  score += numberOfCorrect + secondsLeft;
   // display final score
   message.style.display = '';
   message.textContent = 'Your final score: ' + score;
@@ -182,23 +186,28 @@ var enterInitials = function(){
 
 var highscores = [];
 function renderHighscores() {
-  highscoresList.innerHTML = "";
+  highscoresList.innerHTML = '';
+  highscores = JSON.parse(localStorage.getItem('highscores'));
+  // display previous "initials - final score"s as list items
   for (var i = 0; i < highscores.length; i++) {
-    var li = document.createElement("li");
-    li.textContent = highscores[i];
+    var li = document.createElement('li');
+    li.textContent = highscores[i].userName + ' - ' + highscores[i].userScore;
     highscoresList.append(li);
   }
 }
 
 function storeHighscores() {
-  localStorage.setItem("highscores", JSON.stringify(highscores));
+  localStorage.setItem('highscores', JSON.stringify(highscores));
 }
 
-submitButton.addEventListener("click", function(event) {
-  event.preventDefault();
-  var highscore = initialInput.value + ' - ' + score;
- // add a li when submit initials
-  highscores.push(highscore);
+submitButton.addEventListener('click', function() {
+  var userScore = {
+    userName: initialInput.value, 
+    userScore: score
+  }
+  // If not initialize this, will only render the latest score
+  highscores = JSON.parse(localStorage.getItem("highscores"));
+  highscores.push(userScore)
   storeHighscores();
   renderHighscores();
   title.textContent = 'Highscores';
@@ -206,23 +215,19 @@ submitButton.addEventListener("click", function(event) {
   initialLabel.style.display = 'none';
   initialInput.style.display = 'none';
   submitButton.style.display = 'none';
+  // hide the header
+  header.style.visibility = 'hidden';
+  // display a "Go Back" button
+  main.append(goBackButton); 
+  // display a "Clear Highcores" button
+  main.append(clearScoresButton); 
 });
 
-  // display "Highscores"
-  // display user's "initials - final score" as a list item
-  // display previous "initials - final score"s as list items
-  // display a "Go Back" button
-    // when user clicks the button, restart from the first-loading page
-  // display a "Clear Highcores" button
-    // when user clicks the button, all "initial -final score"s list items cleared
-  // clear timer
+
 
 // Go back to the first loading page
 /*function init() {
-  title.textContent = 'Coding Quiz Challenge';
-  message.style.display = '';
-  message.textContent = 'Try to answer the following code-related questions with the time limit. Keep in mind that incorrect answers will penalize your scoretime by ten seconds!';
-  startButton.style.display = '';
+  
 }
 init();
 */
