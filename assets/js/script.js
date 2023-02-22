@@ -205,7 +205,7 @@ submitButton.addEventListener('click', function() {
     userName: initialInput.value, 
     userScore: score
   }
-  // If not initialize this, will only render the latest score
+  //**If not initialize this, will only render the latest score
   highscores = JSON.parse(localStorage.getItem("highscores"));
   highscores.push(userScore)
   storeHighscores();
@@ -225,9 +225,10 @@ submitButton.addEventListener('click', function() {
 
 
 
-// Go back to the first loading page
-/*function init() {
-  
-}
-init();
-*/
+// when user clicks the "Clear Scores" button, all "initial -final score"s list items cleared
+clearScoresButton.addEventListener('click', function() {
+  // clear all the initial-score pairs in the highscores array
+  highscores = [];
+  localStorage.setItem("highscores", JSON.stringify(highscores));
+  renderHighscores();
+});
