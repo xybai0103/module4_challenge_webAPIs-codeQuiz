@@ -205,7 +205,7 @@ submitButton.addEventListener('click', function() {
     userName: initialInput.value, 
     userScore: score
   }
-  //**If not initialize this, will only render the latest score
+  //**If not initialize this, will only render the latest score **||[] fix the null push error
   highscores = JSON.parse(localStorage.getItem("highscores"))||[];
   highscores.push(userScore)
   storeHighscores();
